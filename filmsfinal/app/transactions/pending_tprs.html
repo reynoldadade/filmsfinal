@@ -1,0 +1,159 @@
+<div ng-controller="pending_qc_Ctrl">
+
+
+    <div class="col-md-6 col-md-offset-3" >
+        <br/>
+   <div class="alert alert-success alert-dismissable text-center" ng-if="action.success">
+            <a href="" class="close" data-dismiss="alert" aria-label="close" ng-click="close_alerts()">&times;</a>
+            <strong>{{action.message}}</strong>
+        </div>
+        <div class="alert alert-danger alert-dismissable text-center" ng-if="action.failure">
+            <a href="" class="close" data-dismiss="alert" aria-label="close" ng-click="close_alerts()">&times;</a>
+            <strong>{{action.message}}</strong>
+        </div>
+           <div class="alert alert-danger alert-dismissable text-center" ng-if="action.network">
+            <a href="" class="close" data-dismiss="alert" aria-label="close" ng-click="close_alerts()">&times;</a>
+            <strong>System is no longer connected to server</strong>
+        </div>
+    </div>
+    <div class="col-md-12">
+    <div class="w3-card w3-center">
+        <header class="w3-teal w3-center"><h1>Pending TPRS</h1></header>
+<div style="overflow:auto; height: 500px;">
+        <table class="table table-condensed table-striped table-hover table-responsive">
+          <thead>
+            <tr class="w3-light-grey">
+                  <th>Request ID</th>
+                  <th><a ng-href="" ng-click="sortType = 'StatusDate'; sortReverse = !sortReverse">KYC Done At<span ng-show="sortType == 'StatusDate' && !sortReverse" class="fa fa-caret-down"></span>
+                      <span ng-show="sortType == 'StatusDate' && sortReverse" class="fa fa-caret-up"></span></a></th>
+                <th>Employee ID</th>
+                <th class="w3-center"> Client Name</th>
+                 <th class="w3-center"><a ng-href="" ng-click="sortType = 'EmployerName'; sortReverse = !sortReverse">Employer<span ng-show="sortType == 'Employer' && !sortReverse" class="fa fa-caret-down"></span>
+                      <span ng-show="sortType == 'EmployerName' && sortReverse" class="fa fa-caret-up"></span></a></th>
+                  <th><a ng-click="sortType = 'LoanType'; sortReverse = !sortReverse">Loan Type<span ng-show="sortType == 'LoanType' && !sortReverse" class="fa fa-caret-down"></span>
+                      <span ng-show="sortType == 'LoanType' && sortReverse" class="fa fa-caret-up"></span></a></th>
+                  <th><a ng-click="sortType = 'PaymentMethod'; sortReverse = !sortReverse">Payment Method <span ng-show="sortType == 'PaymentMethod' && !sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="sortType == 'PaymentMethod' && sortReverse" class="fa fa-caret-up"></span></a></th>
+                  <th>KYC By</th>
+                   <th>TL</th>
+                  <th><a ng-click="sortType = 'Branch'; sortReverse = !sortReverse">Branch<span ng-show="sortType == 'Branch' && !sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="sortType == 'Branch' && sortReverse" class="fa fa-caret-up"></span></a></th>
+
+                  <th><input type="text" class="form-control" placeholder=search ng-model="search"></th>
+
+            </thead>
+            <tbody><!--starting table body--->
+
+          <tr ng-repeat="detail in details| orderBy:sortType:sortReverse| filter:search"><!---applying ng repeat to display sets of data in the api call---->
+            <td>{{detail.LoanRefId}}</td>
+            <td>{{detail.StatusDate|date:'short'}}</td>
+            <td>{{detail.ClientRefId}}</td>
+            <td>{{detail.ClientName}}</td>
+            <td>{{detail.EmployerName}}</td>
+            <td>{{detail.LoanType}}</td>
+            <td>{{detail.PaymentMethod}}</td>
+            <td>{{detail.StatusByUser}}</td>
+            <td>{{detail.TLCode}}</td>
+            <td>{{detail.Branch}}</td>
+
+            <td><button onclick="document.getElementById('modal').style.display='block'" ng-click="setSelected(detail);call_images()"
+                        type="button" class="btn btn-success">View</button>
+            </td>
+          </tr><!--end of ng repeat---->
+        </tbody><!--end of table body--->
+        </table><!---end of table--->
+
+                <div class="w3-center" ng-if="found">
+
+                     <br><br>
+                 <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+                 <span class="sr-only">Loading...</span>
+
+            </div>
+                <div class="w3-center">
+                     <br><br>
+                    <p ng-if="empty">Tray is empty</p>
+                </div>
+    </div>
+
+         <div class="w3-container"><!---modal container----->
+
+
+    <!---modal to display the currently selected row--->
+          <div id="modal" class="w3-modal">
+            <div class="w3-modal-content w3-card-4">
+              <header class="w3-container w3-teal">
+                <span onclick="document.getElementById('modal').style.display='none';document.getElementById('reject_form').style.display='none';document.getElementById('footer_button').style.display='block';" class="w3-button w3-display-topright">&times;</span>
+                <h2>Transaction Details</h2>
+              </header><!---header for the modal----->
+
+                      <div class="w3-container" id="table" ><!--container to hold table to display the currently selected client data--->
+                         <div class="w3-center">
+                             <div class="w3-center">
+                                     <br><br>
+                                 <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw" ng-if="picture"></i>
+
+                                </div>
+                            <img ng-src="{{'data:image/png;base64,'+ images['selfFileName']}}"  alt="{{selfie}}" style="width:30%" class="w3-text w3-margin">
+                            <img ng-src="{{'data:image/png;base64,'+ images['passportPictureFileName']}}" alt="{{passport}}" style="width:30%" class="w3-text w3-margin">
+                         </div><!---content to hold the selfie or image of the currently selected client--->
+
+                        <table class="w3-table-all"><!--beginning of the table to diplay currently selected client data----->
+                          <tbody>
+
+                              <tr><td>STAFF ID: {{details[selected].ClientRefId}}</td><td>EMPLOYEE NAME: {{details[selected].ClientName}}</td></tr>
+                              <tr><td>EMPLOYER: {{details[selected].EmployerName}}</td><td>PAYMENT METHOD: {{details[selected].PaymentMethod}}</td></tr>
+                              <tr><td>GROSS: {{details[selected].GrossAmount}}</td><td>NET: {{details[selected].NetAmount}}</td></tr>
+                              <tr><td>KYC DONE AT: {{details[selected].StatusDate|date:'short'}}</td><td>TENOR: {{details[selected].Tenor}}</td></tr>
+                              <tr><td>DP CODE: {{details[selected].Deal_DPCode}}</td><td>BRANCH: {{details[selected].Branch}}</td></tr>
+                              <tr><td>TRANSACTION TYPE: {{details[selected].LoanType}}</td><td>PAYMENT NUMBER: {{details[selected].MobileNumber}}</td></tr>
+                              <tr><td>CONTACT NUMBER: {{details[selected].ContactNumber}}</td><td>KYC DONE BY: {{details[selected].StatusByUser}}</td></tr>
+                              <tr><td>TL Code: {{details[selected].CreatedByUser}}</td><tr><td>TL NAME: {{details[selected].TLCode}}</td></tr>
+                          </tbody><!--end of table body--->
+                        </table><!---end of table --->
+                        <br/>
+                      </div><!---end of container--->
+
+
+
+                      <footer class="w3-container w3-teal"><!---modal footer--->
+                          <div class="w3-right w3-margin" id="footer_button">
+                            <button class="w3-button w3-red"  type="button" onclick="document.getElementById('reject_form').style.display='block';
+                            document.getElementById('footer_button').style.display='none';">
+                                REJECT
+                            </button>
+                            <button class="w3-button w3-blue" type="button" ng-click="approve()" onclick="document.getElementById('modal').style.display='none'">APPROVE</button>
+                          </div>
+
+                           <div class="w3-content" id="reject_form" style="display: none"><!--container to display the error message form--->
+                    <div class="w3-threequarter">
+                        <form class="w3-container" ng-submit="reject()" name="rejectForm">
+                                    <div class="w3-container" id="error-text" >
+                                        <div class="w3-half w3-right w3-margin">
+                                        <label for="error_code">Select Error:</label>
+                                        <select  ng-model="selected_error"  class="form-control" id="error_code" required>
+                                            <option ng-repeat ="errors in error_codes" value="{{errors.ErrorId}}">{{errors.ErrorName}}</option>
+                                        </select>
+                                            <br>
+                                            <textarea ng-model="message" class="form-control" placeholder="Message"></textarea>
+                                        </div>
+                                   <button class="w3-button w3-red w3-right w3-margin" type="submit" onclick="document.getElementById('modal').style.display='none'" ng-disabled="rejectForm.$invalid">REJECT</button>
+                                   <button class="w3-button w3-blue w3-right w3-margin"  type="button" onclick="document.getElementById('reject_form').style.display='none';document.getElementById('footer_button').style.display='block';">
+                                       BACK
+                            </button>
+                                    </div>
+
+                        </form><!--end of rejection form--->
+                    </div>
+                </div><!--end of reject form --->
+
+                      </footer><!--end of modal footer-->
+
+
+
+            </div>
+          </div>
+    </div><!---end of pending qc container--->
+    </div>
+    </div>
+</div>

@@ -1,0 +1,146 @@
+<div ng-controller="settings_Ctrl">
+   <form name="payment_form" ng-submit="submit()">
+
+       <div class="row" ng-if="set">
+            <div class="col-md-4 col-md-offset-4">
+
+               <div class="alert alert-success alert-dismissable">
+                  <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <strong>Success!</strong> Filters have been set.
+                </div>
+                <br>
+           </div>
+       </div>
+
+                <div class="col-md-3 col-md-offset-3">
+                    <div class="w3-card-4 w3-margin">
+                            <header class="w3-container w3-teal w3-center">
+                              <h2>Payment Options</h2>
+                            </header>
+
+                            <table class="w3-table">
+                                <tr ng-if="paymentMethod['MTN Mobile Money'] || logged_in.all"><td><label for="mtn">
+                                        <input id="mtn" type="checkbox" ng-model="checkbox.mtn" ng-true-value="'MTN Mobile Money'" ng-false-value="'none'">
+                                        MTN</label></td>
+                                </tr>
+                                <tr ng-if="paymentMethod['TIGO Cash']|| logged_in.all"><td><label for="tigo">
+                                        <input id="tigo" type="checkbox" ng-model="checkbox.tigo" ng-true-value="'TIGO Cash'" ng-false-value="'none'">
+                                       TIGO</label></td>
+                                </tr>
+                                <tr ng-if="paymentMethod['GN Bank']|| logged_in.all"><td><label for="gn">
+                                        <input id="gn" type="checkbox" ng-model="checkbox.gn"  ng-true-value="'GN Bank'" ng-false-value="'none'">
+                                       GN BANK</label></td>
+                                </tr>
+                                <tr ng-if="paymentMethod['Vodafone Cash']|| logged_in.all"><td><label for="vodafone">
+                                        <input id="vodafone" type="checkbox" ng-model="checkbox.vodafone"  ng-true-value="'Vodafone Cash'" ng-false-value="'none'">
+                                        VODAFONE</label></td>
+                                </tr>
+                                <tr ng-if="paymentMethod['GCB']|| logged_in.all"><td> <label for="gcb">
+                                        <input id="gcb" type="checkbox" ng-model="checkbox.gcb" ng-true-value="'GCB'" ng-false-value="'none'">
+                                        GCB</label></td>
+                                </tr>
+                                 <tr ng-if="paymentMethod['Cheque']|| logged_in.all"><td> <label for="cheque">
+                                        <input id="cheque" type="checkbox" ng-model="checkbox.cheque" ng-true-value="'Cheque'" ng-false-value="'none'">
+                                        CHEQUE</label></td>
+                                </tr>
+                                <tr ng-if="paymentMethod['GhIPSS']|| logged_in.all"><td> <label for="ghipss">
+                                        <input id="ghipss" type="checkbox" ng-model="checkbox.ghipss" ng-true-value="'GhIPSS'" ng-false-value="'none'">
+                                        GHIPSS</label></td>
+                                </tr>
+
+                            </table>
+
+
+
+
+
+    </div>
+                     <button type="submit" class="w3-button w3-block w3-blue w3-card-4">SET <i class="fa fa-check-square-o" aria-hidden="true" ng-if="set"></i></button>
+</div>
+
+        <div class="col-md-2">
+                    <div class="w3-card-4 w3-margin">
+                            <header class="w3-container w3-teal w3-center">
+                              <h2>Branches</h2>
+                            </header>
+                            <table class="w3-table">
+                                 <tr ng-if="branches['Head Office']|| logged_in.all">
+                                    <td><label for="Head Office">
+                                        <input id="Head Office" type="checkbox" ng-model="checkbox.headoffice" ng-true-value="'Head Office'" ng-false-value="'none'">
+                                        HEAD OFFICE</label>
+                                    </td>
+                                </tr>
+                                <tr ng-if="branches['Accra']|| logged_in.all">
+                                    <td><label for="accra">
+                                        <input id="accra" type="checkbox" ng-model="checkbox.accra" ng-true-value="'Accra'" ng-false-value="'none'">
+                                        ACCRA</label>
+                                    </td>
+                                </tr>
+                                <tr ng-if="branches['Bolga']|| logged_in.all">
+                                    <td><label for="bolga">
+                                        <input id="bolga" type="checkbox" ng-model="checkbox.bolgatanga" ng-true-value="'Bolga'" ng-false-value="'none'">
+                                        BOLGA</label>
+                                    </td>
+                                </tr>
+                                <tr ng-if="branches['Kumasi']|| logged_in.all">
+                                <td><label for="kumasi">
+                                        <input id="kumasi" type="checkbox" ng-model="checkbox.kumasi"  ng-true-value="'Kumasi'" ng-false-value="'none'">
+                                       KUMASI</label>
+                                </td>
+                                </tr>
+                                <tr ng-if="branches['Tamale']|| logged_in.all">
+                                    <td><label for="tamale">
+                                        <input id="tamale" type="checkbox" ng-model="checkbox.tamale"  ng-true-value="'Tamale'" ng-false-value="'none'">
+                                        TAMALE</label></td>
+                                </tr>
+                                <tr ng-if="branches['Wa']|| logged_in.all">
+                                    <td> <label for="wa">
+                                        <input id="wa" type="checkbox" ng-model="checkbox.wa" ng-true-value="'Wa'" ng-false-value="'none'">
+                                        WA</label>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td ng-if="branches['Cape Coast']|| logged_in.all"> <label for="capecoast">
+                                        <input id="capecoast" type="checkbox" ng-model="checkbox.capecoast" ng-true-value="'Cape coast'" ng-false-value="'none'">
+                                        CAPECOAST</label>
+                                    </td>
+                                 </tr>
+                                <tr>
+                                     <td ng-if="branches['Koforidua']|| logged_in.all"> <label for="koforidua">
+                                        <input id="koforidua" type="checkbox" ng-model="checkbox.koforidua" ng-true-value="'Koforidua'" ng-false-value="'none'">
+                                        KOFORIDUA</label>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                     <td ng-if="branches['Sunyani']|| logged_in.all"> <label for="sunyani">
+                                        <input id="sunyani" type="checkbox" ng-model="checkbox.sunyani" ng-true-value="'Sunyani'" ng-false-value="'none'">
+                                        SUNYANI</label>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                     <td ng-if="branches['Ho']|| logged_in.all"> <label for="ho">
+                                        <input id="ho" type="checkbox" ng-model="checkbox.ho" ng-true-value="'Ho'" ng-false-value="'none'">
+                                        HO</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                     <td ng-if="branches['Akatsi']|| logged_in.all"> <label for="akatsi">
+                                        <input id="akatsi" type="checkbox" ng-model="checkbox.akatsi" ng-true-value="'Akatsi'" ng-false-value="'none'">
+                                        AKATSI</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                     <td ng-if="branches['Takoradi']|| logged_in.all"> <label for="takoradi">
+                                        <input id="takoradi" type="checkbox" ng-model="checkbox.takoradi" ng-true-value="'Takoradi'" ng-false-value="'none'">
+                                        TAKORADI</label>
+                                    </td>
+                                </tr>
+                            </table>
+
+                    </div>
+                </div>
+
+
+   </form>
+
+</div>

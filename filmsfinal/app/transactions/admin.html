@@ -1,0 +1,303 @@
+<div ng-controller="admin_Ctrl">
+      <div class="col-md-6 col-md-offset-3" >
+         <br/>
+  <div class="alert alert-success alert-dismissable text-center" ng-if="action.success">
+            <a href="" class="close" data-dismiss="alert" aria-label="close" ng-click="close_alerts()">&times;</a>
+            <strong>{{action.message}}</strong>
+        </div>
+        <div class="alert alert-danger alert-dismissable text-center" ng-if="action.failure">
+            <a href="" class="close" data-dismiss="alert" aria-label="close" ng-click="close_alerts()">&times;</a>
+            <strong>{{action.message}}</strong>
+        </div>
+           <div class="alert alert-danger alert-dismissable text-center" ng-if="action.network">
+            <a href="" class="close" data-dismiss="alert" aria-label="close" ng-click="close_alerts()">&times;</a>
+            <strong>System is no longer connected to server</strong>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="w3-card-4 w3-light-gray">
+            <header class="w3-teal w3-center">
+            <h2><i class="fa fa-cog fa-spin"></i> Admin Panel</h2>
+        </header>
+          <div style="overflow:auto; height: 500px;">
+        <table class="table table-condensed table-hover">
+            <thead>
+            <tr>
+                <th>Name</th>
+
+                <th>Role</th>
+                <th>Permission</th>
+                <th>Branches</th>
+                <th>Payments</th>
+                <th class="w3-center"><button class="w3-btn w3-teal" onclick="document.getElementById('new_modal').style.display='block'" ng-click="setSelected($index)"> <strong>+ New</strong></button></th>
+                <th><input class="form-control" type="text" placeholder="search" ng-model="search"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="detail in details| orderBy:sortType:sortReverse| filter:search">
+            <td><strong>{{detail.Name}}</strong></td>
+            <td><strong>{{detail.UserRoleId|role_filter}}</strong></td>
+            <td><strong>{{detail.Permission}}</strong></td>
+            <td><strong>{{detail.Branch}}</strong></td>
+            <td><strong>{{detail.PaymentMethod}}</strong></td>
+            <td class="w3-center"><button class="btn btn-primary" onclick="document.getElementById('modal').style.display='block'" ng-click="setSelected(detail)"><i class="fa fa-pencil"></i> Edit Access</button></td>
+            <td class="w3-center"><button class="btn btn-info" onclick="document.getElementById('password_modal').style.display='block'" ng-click="setSelected(detail)"><i class="fa fa-pencil"></i> Edit Password</button></td>
+            <td class="w3-center"><button class="btn btn-warning" onclick="document.getElementById('role_modal').style.display='block'" ng-click="setSelected(detail)"><i class="fa fa-pencil"></i>Change Role</button></td>
+            <td class="w3-center"><button class="btn btn-danger" onclick="document.getElementById('permission_modal').style.display='block'" ng-click="setSelected(detail)"><i class="fa fa-ban"></i> Suspend</button></td>
+        </tr>
+            </tbody>
+        </table>
+          </div>
+<!---reset password and roles controller--->
+<div class="w3-container"><!---modal container----->
+    <!---modal to display the currently selected row--->
+          <div id="modal" class="w3-modal">
+
+            <div class="w3-modal-content w3-card-4">
+              <header class="w3-container w3-teal">
+                <span onclick="document.getElementById('modal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h2>Edit Details</h2>
+              </header><!---header for the modal----->
+
+<form class="w3-container" ng-submit="edit_payment()" name="edit_form">
+
+                <label>Name: {{details[selected].Name| uppercase}}</label><br>
+                <label>User Code: {{details[selected].UserCode}}</label>
+                <br>
+                <header class="w3-light-gray w3-container w3-center w3-margin w3-card"> <h2>Views</h2></header>
+         <div class="w3-col w3-half">
+                <table class="w3-table w3-margin w3-light-gray w3-card">
+                    <tr><td><label for="mtn">
+                            <input id="mtn" type="checkbox" ng-model="checkbox.mtn" ng-true-value="'MTN Mobile Money'" ng-false-value="'none'">
+                            MTN</label></td>
+                    </tr>
+                    <tr><td><label for="tigo">
+                            <input id="tigo" type="checkbox" ng-model="checkbox.tigo" ng-true-value="'TIGO Cash'" ng-false-value="'none'">
+                           TIGO</label></td>
+                    </tr>
+                    <tr><td><label for="gn">
+                            <input id="gn" type="checkbox" ng-model="checkbox.gn"  ng-true-value="'GN Bank'" ng-false-value="'none'">
+                           GN BANK</label></td>
+                    </tr>
+                    <tr><td><label for="vodafone">
+                            <input id="vodafone" type="checkbox" ng-model="checkbox.vodafone"  ng-true-value="'Vodafone Cash'" ng-false-value="'none'">
+                            VODAFONE</label></td>
+                    </tr>
+                    <tr><td> <label for="gcb">
+                            <input id="gcb" type="checkbox" ng-model="checkbox.gcb" ng-true-value="'GCB'" ng-false-value="'none'">
+                            GCB</label></td>
+                    </tr>
+                     <tr><td> <label for="cheque">
+                            <input id="cheque" type="checkbox" ng-model="checkbox.cheque" ng-true-value="'Cheque'" ng-false-value="'none'">
+                            CHEQUE</label></td>
+                    </tr>
+                    <tr><td> <label for="ghipss">
+                            <input id="ghipss" type="checkbox" ng-model="checkbox.ghipss" ng-true-value="'GhIPSS'" ng-false-value="'none'">
+                            GHIPSS</label></td>
+                    </tr>
+
+            </table>
+            <button class="w3-button w3-blue w3-right w3-margin" type="submit" onclick="document.getElementById('modal').style.display='none'" ng-disabled="edit_form.$invalid">SUBMIT</button>
+
+        </div>
+</form>
+
+ <form class="w3-container" ng-submit="change_branch()">
+        <div class="w3-col w3-half">
+            <table class="w3-table w3-margin w3-light-gray w3-card">
+                <tr>
+                    <td><label for="Head Office">
+                        <input id="Head Office" type="checkbox" ng-model="checkbox.headoffice" ng-true-value="'Head Office'" ng-false-value="'none'">
+                        Head Office</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="accra">
+                        <input id="accra" type="checkbox" ng-model="checkbox.accra" ng-true-value="'Accra'" ng-false-value="'none'">
+                        ACCRA</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="bolga">
+                        <input id="bolga" type="checkbox" ng-model="checkbox.bolgatanga" ng-true-value="'Bolga'" ng-false-value="'none'">
+                        BOLGA</label>
+                    </td>
+                </tr>
+                <tr>
+                <td><label for="kumasi">
+                        <input id="kumasi" type="checkbox" ng-model="checkbox.kumasi"  ng-true-value="'Kumasi'" ng-false-value="'none'">
+                       KUMASI</label>
+                </td>
+                </tr>
+                <tr>
+                    <td><label for="tamale">
+                        <input id="tamale" type="checkbox" ng-model="checkbox.tamale"  ng-true-value="'Tamale'" ng-false-value="'none'">
+                        TAMALE</label></td>
+                </tr>
+                <tr>
+                    <td> <label for="wa">
+                        <input id="wa" type="checkbox" ng-model="checkbox.wa" ng-true-value="'Wa'" ng-false-value="'none'">
+                        WA</label>
+                    </td>
+                </tr>
+                 <tr>
+                    <td> <label for="capecoast">
+                        <input id="capecoast" type="checkbox" ng-model="checkbox.capecoast" ng-true-value="'Cape coast'" ng-false-value="'none'">
+                        CAPECOAST</label>
+                    </td>
+                 </tr>
+                <tr>
+                     <td> <label for="koforidua">
+                        <input id="koforidua" type="checkbox" ng-model="checkbox.koforidua" ng-true-value="'Koforidua'" ng-false-value="'none'">
+                        KOFORIDUA</label>
+                    </td>
+                </tr>
+                 <tr>
+                     <td> <label for="sunyani">
+                        <input id="sunyani" type="checkbox" ng-model="checkbox.sunyani" ng-true-value="'Sunyani'" ng-false-value="'none'">
+                        SUNYANI</label>
+                    </td>
+                </tr>
+                 <tr>
+                     <td> <label for="ho">
+                        <input id="ho" type="checkbox" ng-model="checkbox.ho" ng-true-value="'Ho'" ng-false-value="'none'">
+                        HO</label>
+                    </td>
+                </tr>
+                <tr>
+                     <td> <label for="akatsi">
+                        <input id="akatsi" type="checkbox" ng-model="checkbox.akatsi" ng-true-value="'Akatsi'" ng-false-value="'none'">
+                        AKATSI</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td> <label for="takoradi">
+                        <input id="takoradi" type="checkbox" ng-model="checkbox.takoradi" ng-true-value="'Takoradi'" ng-false-value="'none'">
+                        TAKORADI</label>
+                    </td>
+                </tr>
+            </table>
+            <button class="w3-button w3-blue w3-right w3-margin" type="submit" onclick="document.getElementById('modal').style.display='none'" ng-disabled="edit_form.$invalid">SUBMIT</button>
+        </div>
+
+ </form><!--end of branch form--->
+
+
+    </div><!--end of reject form --->
+  </div>
+</div>
+
+
+<div class="w3-container"><!---modal container----->
+    <!---modal to display the currently selected row--->
+          <div id="new_modal" class="w3-modal">
+
+            <div class="w3-modal-content w3-card-4">
+              <header class="w3-container w3-teal">
+                <span onclick="document.getElementById('new_modal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h2 class="w3-center">Edit Details</h2>
+              </header><!---header for the modal----->
+
+            <form class="w3-container" ng-submit="new()" name="new_form">
+                 <label for="code">Code</label>
+                <input class="w3-input" type="text" id="code" ng-model="code" required>
+                <label for="name">Name</label>
+                <input class="w3-input" type="text" id="name" ng-model="name" required>
+                <label for="new_roles">Select Role:</label>
+                 <select  ng-model="selected_role" class="w3-select" id="new_roles" required>
+                <option ng-repeat ="role in roles" value="{{role.UserRoleId}}">{{role.RoleName}}</option>
+                </select>
+
+                <label for="team_code">Team Code</label>
+                <input class="w3-input" type="text" id="team_code" ng-model="team_code" required>
+                <label for="confirm_team_code">Confirm Team Code</label>
+                <input class="w3-input" type="text" name="confirm_team_code" id="confirm_team_code" ng-model="confirm_team_code" ng-pattern="team_code" required>
+                 <p ng-show="new_form.confirm_team_code.$error.pattern" class="w3-center">Passwords do not match</p>
+
+                <button class="w3-button w3-blue w3-right w3-margin" type="submit" onclick="document.getElementById('new_modal').style.display='none'" ng-disabled="new_form.$invalid">SUBMIT</button>
+
+            </form><!--end of rejection form--->
+            </div><!--end of reject form --->
+          </div>
+</div>
+
+
+        <div class="w3-container"><!---modal container----->
+    <!---modal to display the currently selected row--->
+          <div id="password_modal" class="w3-modal">
+
+            <div class="w3-modal-content w3-card-4">
+              <header class="w3-container w3-teal">
+                <span onclick="document.getElementById('password_modal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h2>Edit Password</h2>
+              </header><!---header for the modal----->
+
+            <form class="w3-container" ng-submit="change_password()" name="password_form">
+                 <label for="new_password">New Password</label>
+                <input class="form-control" type="text" id="new_password" ng-model="new_password" required>
+                <label for="confirm_new_password">Confirm New Password</label>
+                <input class="form-control" type="text" id="confirm_new_password" name="password2" ng-model="confirm_new_password" ng-pattern="new_password" required>
+                <p id="error" ng-show="edit_form.password2.$error.pattern" class="w3-center">Passwords do not match</p>
+
+                <button class="w3-button w3-blue w3-right w3-margin" type="submit" onclick="document.getElementById('new_modal').style.display='none'" ng-disabled="password_form.password2.$error.pattern || edit_form.$invalid">SUBMIT</button>
+
+            </form><!--end of rejection form--->
+            </div><!--end of reject form --->
+          </div>
+</div>
+
+
+        <div class="w3-container"><!---modal container----->
+    <!---modal to display the currently selected row--->
+          <div id="role_modal" class="w3-modal">
+
+            <div class="w3-modal-content w3-card-4">
+              <header class="w3-container w3-teal">
+                <span onclick="document.getElementById('role_modal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h2>Edit Role</h2>
+              </header><!---header for the modal----->
+
+            <form class="w3-container" ng-submit="change_role()" name="role_form">
+                <label for="roles">Select Role:</label>
+                 <select  ng-model="selected_role" class="form-control" id="roles" required>
+                <option ng-repeat ="role in roles" value="{{role.UserRoleId}}">{{role.RoleName}}</option>
+                </select>
+
+                <button class="w3-button w3-blue w3-right w3-margin" type="submit" onclick="document.getElementById('new_modal').style.display='none'">SUBMIT</button>
+
+            </form><!--end of rejection form--->
+            </div><!--end of reject form --->
+          </div>
+</div>
+
+      <div class="w3-container"><!---modal container----->
+    <!---modal to display the currently selected row--->
+          <div id="permission_modal" class="w3-modal">
+
+            <div class="w3-modal-content w3-card-4">
+              <header class="w3-container w3-teal">
+                <span onclick="document.getElementById('permission_modal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h2>Permission</h2>
+              </header><!---header for the modal----->
+
+            <form class="w3-container" ng-submit="lock_account()" name="permission_form">
+            <div class="w3-center w3-margin">
+                 <label for="permission">
+                        <input id="permission" type="checkbox" ng-model="permission">Unlock
+                 </label>
+            </div>
+
+
+
+                <button class="w3-button w3-blue w3-right w3-margin" type="submit" onclick="document.getElementById('permission_modal').style.display='none'">SUBMIT</button>
+
+            </form><!--end of rejection form--->
+            </div><!--end of reject form --->
+          </div>
+</div>
+      </div>
+
+
+</div>
+</div>

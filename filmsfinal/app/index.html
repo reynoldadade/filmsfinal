@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>FILMS</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="bower_components/angular/angular.js"></script>
+  <link rel="icon" href="favicon.ico" />
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+
+  <div class="w3-bar w3-teal">
+      <a ng-href="#!/dashboard" class="w3-bar-item w3-button"><img src="static/images/dalex_logo.png"></a>
+      <a class="w3-bar-item w3-button w3-right" ng-if="logged_in.showMenu" ng-cloak><span class="fa fa-user"></span> <strong>{{::logged_in.user}}</strong>, Last logged in {{logged_in.LastLogin}}</a>
+    </div>
+
+<div zclass="w3-main" id="main">
+  <div class="w3-teal" ng-if="logged_in.showMenu" ng-cloak>
+    <i  class="fa fa-bars fa-2x w3-margin w3-animate-fading-reynold" id="openNav" onclick="w3_open()" ></i>
+    <i class="fa fa-bars fa-rotate-90 fa-2x w3-margin w3-animate-fading-reynold" id="closeNav" onclick="w3_close()" style="display: none" ></i>
+    <div class="w3-dropdown-hover w3-right" style="margin-right: 7%">
+      <i class="fa fa-ellipsis-v fa-2x  w3-margin w3-animate-fading-reynold" aria-hidden="true"></i>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4 w3-left">
+         <a ng-href="#!/dashboard" class="w3-bar-item w3-button w3-hover-aqua" ng-if="logged_in.all"><i class="fa fa-desktop" aria-hidden="true" ></i> Dashboard</a>
+        <a ng-href="#!/settings" class="w3-bar-item w3-button w3-hover-teal"><i class="fa fa-filter" aria-hidden="true"></i> Preferences</a>
+        <a ng-href="#!/statistics" class="w3-bar-item w3-button w3-hover-blue"><i class="fa fa-bar-chart" aria-hidden="true"></i> My Page</a>
+        <a ng-href="#!/admin" class="w3-bar-item w3-button w3-hover-yellow" ng-if="logged_in.all"><i class="fa fa-cog fa-spin"></i> Admin </a>
+        <a ng-href="#!/logout" class="w3-bar-item w3-button w3-hover-red"><i class="fa fa-sign-out" aria-hidden="true"></i> Log Out</a>
+
+       </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="w3-bar w3-teal w3-center w3-animate-fading" style="position: fixed;bottom: 0">
+  <p>This Application is a property of Dalex finance and Leasing Company and by use of this application you have agreed to be in compliance with its policies</p>
+</div>
+
+<div ng-view></div>
+<!------navigation---->
+<div class="container-fluid" ng-if="form_data.filtered">
+  <div class="w3-sidebar w3-bar-block w3-card-2 w3-animate-left" id="mySidebar" style="display:none">
+
+  <a ng-href="#!/kyc" class="w3-bar-item w3-button w3-hover-teal" ng-if="logged_in.kyc || logged_in.all" onclick="w3_close()"><i class="fa fa-users" ></i> KYC</a>
+  <a ng-href="#!/kyc_rejected" class="w3-bar-item w3-button w3-hover-teal" ng-if="logged_in.kyc || logged_in.all" onclick="w3_close()"><i class="fa fa-times-circle-o" ></i> KYC Rejected</a>
+  <a ng-href="#!/tprs_pending" class="w3-bar-item w3-button w3-hover-teal" ng-if="logged_in.qc || logged_in.all" onclick="w3_close()"><i class="fa fa-check" ></i> TPRS Pending</a>
+  <a ng-href="#!/tprs_rejected" class="w3-bar-item w3-button w3-hover-teal" ng-if="logged_in.qc || logged_in.all" onclick="w3_close()"><i class="fa fa-times-circle-o" ></i> TPRS Rejected</a>
+  <a ng-href="#!/e-pay_pending" class="w3-bar-item w3-button w3-hover-teal" ng-if="logged_in.epay || logged_in.all" onclick="w3_close()"><i class="fa fa-thumbs-o-up" ></i> E-Pay Pending</a>
+  <a ng-href="#!/e-pay_rejected" class="w3-bar-item w3-button w3-hover-teal" ng-if="logged_in.epay || logged_in.all" onclick="w3_close()"><i class="fa fa-times-circle-o" ></i> Rejected Payments</a>
+  <a ng-href="#!/paid_deals" class="w3-bar-item w3-button w3-hover-teal" ng-if="logged_in.epay || logged_in.all" onclick="w3_close()"><i class="fa fa-money" ></i> Paid Deals</a>
+  <a ng-href="#!/cancelled_requests" class="w3-bar-item w3-button w3-hover-teal" onclick="w3_close()"><i class="fa fa-ban" aria-hidden="true"></i> Cancelled Requests</a>
+
+  </div>
+</div>
+<!---------navigation----->
+
+<!-- All scripts -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+ <script src="https://use.fontawesome.com/f03c3dd7c0.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js"></script>
+<script src="bower_components/file-saver/FileSaver.min.js"></script>
+<script src="bower_components/json-export-excel/dest/json-export-excel.min.js"></script>
+  <script src="app.js"></script>
+<script src="bower_components/chart.js/dist/Chart.min.js"></script>
+<script src="bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
+<!-------->
+</body>
+</html>
